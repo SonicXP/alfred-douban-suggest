@@ -12,9 +12,11 @@ response = conn.getresponse()
 data = response.read()
 conn.close()
 
+data = data.decode("ISO-8859-1").encode("utf-8")
 data = re.sub(r"{\s*(\w)", r'{"\1', data)
 data = re.sub(r",\s*(\w)", r',"\1', data)
 data = re.sub(r"(\w):", r'\1":', data)
+data = re.sub(r'\\(?![/u"])', r"\\\\", data)
 
 dataobj = json.loads(data)
 doc = Document()
